@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ankit Agarwal — Retail Operations &amp; Growth</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans (display/body), Playfair Display (italic serif accent), JetBrains Mono (eyebrows/tags) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Tailwind Configuration -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+          },
+          colors: {
+            accent: '#e0531f',
+            'accent-hover': '#c94616',
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ==========================================================================
+       Theme Design Tokens (Default: Deep Matte Obsidian Dark Mode)
+       ========================================================================== */
+    :root {
+      --bg-page: #faf8f5;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #fcfaf7;
+      --bg-nav: rgba(250, 248, 245, 0.85);
+      --bg-callout-warn: rgba(224, 83, 31, 0.05);
+      --border-subtle: #e5dfd6;
+      --border-strong: #d4ccc0;
+      --border-warn: rgba(224, 83, 31, 0.28);
+      --text-primary: #151311;
+      --text-secondary: #5c564e;
+      --text-muted: #827b71;
+      --accent: #e0531f;
+      --accent-soft: rgba(224, 83, 31, 0.12);
+    }
+
+    html.dark {
+      --bg-page: #0c0b0a;
+      --bg-surface: #141311;
+      --bg-surface-hover: #191714;
+      --bg-nav: rgba(12, 11, 10, 0.82);
+      --bg-callout-warn: rgba(224, 83, 31, 0.06);
+      --border-subtle: #262320;
+      --border-strong: #36322d;
+      --border-warn: rgba(224, 83, 31, 0.30);
+      --text-primary: #f5f2eb;
+      --text-secondary: #9e988f;
+      --text-muted: #706a62;
+      --accent: #e0531f;
+      --accent-soft: rgba(224, 83, 31, 0.14);
+    }
+
+    /* Smooth Theme Transitions */
+    body,
+    header,
+    .ops-card,
+    .ops-pill,
+    .ops-btn-secondary {
+      transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.2s ease;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Editorial Card Surface */
+    .ops-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .ops-card-interactive:hover {
+      background-color: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    /* Capability / Keyword Pill */
+    .ops-pill {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .ops-pill:hover {
+      border-color: var(--accent);
+      color: var(--text-primary);
+    }
+
+    /* Secondary Button */
+    .ops-btn-secondary {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+    }
+
+    .ops-btn-secondary:hover {
+      background-color: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+    }
+
+    /* Editorial Serif Italic Word Accent */
+    .editorial-italic {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    /* Subtle Scroll Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Custom Toast Notification */
+    #toast {
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+  </style>
+
+  <!-- Initialize Theme (Default to Dark Mode unless user explicitly chose Light) -->
+  <script>
+    (function () {
+      try {
+        const saved = localStorage.getItem('ankit-ops-theme');
+        if (saved === 'light') {
+          document.documentElement.classList.remove('dark');
+        } else {
+          document.documentElement.classList.add('dark');
+        }
+      } catch (e) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+
+<body class="min-h-screen antialiased selection:bg-[#e0531f]/25 selection:text-[#f5f2eb]">
+
+  <!-- ========================================================================
+       MINIMAL STICKY TOP NAVBAR
+       ======================================================================== -->
+  <header
+    class="sticky top-0 z-40 backdrop-blur-md"
+    style="background-color: var(--bg-nav); border-bottom: 1px solid var(--border-subtle);"
+  >
+    <div class="max-w-5xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-4">
+      <!-- Brand: Interlocking AA Monogram + Name -->
+      <a href="#overview" class="flex items-center gap-3 group focus:outline-none">
+        <span
+          class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+          style="background-color: var(--bg-surface); border: 1px solid var(--border-subtle);"
+        >
+          <!-- Simple Interlocking AA Monogram SVG -->
+          <svg class="w-5 h-5" viewBox="0 0 28 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 20L9.5 4L16 20" />
+            <path d="M5.5 14.5H13.5" />
+            <path d="M12 20L18.5 4L25 20" stroke="#e0531f" />
+            <path d="M14.5 14.5H22.5" stroke="#e0531f" />
+          </svg>
+        </span>
+        <span class="font-semibold text-[15px] tracking-tight" style="color: var(--text-primary);">
+          Ankit Agarwal
+        </span>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav aria-label="Primary" class="hidden md:flex items-center gap-7 text-sm font-medium">
+        <a href="#overview" class="hover:opacity-100 opacity-75 transition-opacity" style="color: var(--text-primary);">Overview</a>
+        <a href="#results" class="hover:opacity-100 opacity-75 transition-opacity" style="color: var(--text-primary);">Results</a>
+        <a href="#capabilities" class="hover:opacity-100 opacity-75 transition-opacity" style="color: var(--text-primary);">Capabilities</a>
+      </nav>
+
+      <!-- Right Controls: Contact CTA + Theme Toggle + Mobile Menu Button -->
+      <div class="flex items-center gap-2.5">
+        <a
+          href="#contact"
+          class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold tracking-tight text-white bg-[#e0531f] hover:bg-[#c94616] transition-colors"
+        >
+          <span>Contact Me</span>
+        </a>
+
+        <!-- Light / Dark Mode Toggle -->
+        <button
+          id="theme-toggle"
+          type="button"
+          aria-label="Toggle light and dark theme"
+          title="Toggle light / dark mode"
+          class="w-9 h-9 rounded-full flex items-center justify-center ops-btn-secondary cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#e0531f]/40"
+        >
+          <!-- Half-circle editorial theme icon / sun & moon swap -->
+          <svg class="w-4 h-4 hidden dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4.5" />
+            <path d="M12 2.5v2M12 19.5v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2.5 12h2M19.5 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" />
+          </svg>
+          <svg class="w-4 h-4 block dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          class="md:hidden w-9 h-9 rounded-full flex items-center justify-center ops-btn-secondary cursor-pointer"
+        >
+          <svg id="menu-icon-open" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg id="menu-icon-close" class="w-4 h-4 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M6 6l12 12M18 6l-12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Navigation -->
+    <div
+      id="mobile-menu"
+      class="hidden md:hidden px-5 pb-5 pt-2 space-y-2"
+      style="background-color: var(--bg-page); border-bottom: 1px solid var(--border-subtle);"
+    >
+      <a href="#overview" class="mobile-nav-link block py-2 text-sm font-medium" style="color: var(--text-primary);">Overview</a>
+      <a href="#results" class="mobile-nav-link block py-2 text-sm font-medium" style="color: var(--text-primary);">Results</a>
+      <a href="#capabilities" class="mobile-nav-link block py-2 text-sm font-medium" style="color: var(--text-primary);">Capabilities</a>
+      <a href="#contact" class="mobile-nav-link inline-flex items-center justify-center w-full mt-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#e0531f]">
+        Contact Me
+      </a>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN CONTENT
+       ======================================================================== -->
+  <main class="max-w-5xl mx-auto px-5 sm:px-8">
+
+    <!-- ======================================================================
+         1. HERO SECTION
+         ====================================================================== -->
+    <section id="overview" class="pt-14 pb-10 sm:pt-20 sm:pb-14 reveal">
+      <!-- Breadcrumb / Eyebrow -->
+      <p class="font-mono text-[11px] sm:text-xs uppercase tracking-[0.14em] mb-4" style="color: var(--text-muted);">
+        RETAIL OPERATIONS &amp; GROWTH &middot; TECH + BUSINESS
+      </p>
+
+      <!-- Editorial Display Headline -->
+      <h1
+        class="text-4xl sm:text-6xl md:text-[66px] font-bold tracking-[-0.035em] leading-[1.05] max-w-3xl"
+        style="color: var(--text-primary);"
+      >
+        Building systems that
+        <span class="editorial-italic font-medium">grow</span>
+        businesses<span class="text-[#e0531f]">.</span>
+      </h1>
+
+      <!-- "THE SHORT ANSWER" Callout Box -->
+      <div class="ops-card rounded-xl p-6 sm:p-8 mt-8 sm:mt-10">
+        <p class="font-mono text-[11px] uppercase tracking-[0.15em] font-medium mb-3 text-[#e0531f]">
+          THE SHORT ANSWER
+        </p>
+        <p class="text-[15px] sm:text-[16.5px] leading-[1.7] max-w-4xl" style="color: var(--text-secondary);">
+          I am not a founder yet, and I did not own the store—I worked inside a real retail clothing business across two stints
+          (<span style="color: var(--text-primary);" class="font-medium">June–August 2025</span> and
+          <span style="color: var(--text-primary);" class="font-medium">June–October 2026</span>),
+          advising the owner directly on strategy, floor execution, and day-to-day operations. During that time, I helped guide annual revenue from
+          <span style="color: var(--text-primary);" class="font-semibold">~₹1.25 Cr in 2025</span> to
+          <span style="color: var(--text-primary);" class="font-semibold">~₹1.70 Cr in 2026</span>.
+          By pairing an engineer's systems thinking (<span style="color: var(--text-primary);" class="font-medium">Full-Stack &amp; AI</span>) with a founder's accountability, I focus on spotting operational bottlenecks and turning practical ideas into measurable revenue.
+        </p>
+      </div>
+
+      <!-- Primary & Secondary CTAs -->
+      <div class="mt-6 flex flex-wrap items-center gap-3">
+        <a
+          href="#results"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold text-white bg-[#e0531f] hover:bg-[#c94616] transition-colors"
+        >
+          <span>See the Results</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
+        <a
+          href="#contact"
+          class="inline-flex items-center gap-2 px-5 py-3 rounded-lg text-sm font-medium ops-btn-secondary"
+        >
+          <span>Get in Touch</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         2. METRICS-FORWARD STAT BAND (4 Bordered Metric Cards)
+         ====================================================================== -->
+    <section aria-label="Key metrics" class="pb-14 sm:pb-20 reveal">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <!-- Metric 1 -->
+        <div class="ops-card rounded-xl p-5 flex flex-col justify-between">
+          <p class="font-mono text-[10px] uppercase tracking-[0.14em] mb-3" style="color: var(--text-muted);">
+            REVENUE TRAJECTORY
+          </p>
+          <p class="text-xl sm:text-[22px] font-bold tracking-tight leading-snug" style="color: var(--text-primary);">
+            ~₹1.25 Cr <span class="text-[#e0531f]">&rarr;</span> ~₹1.70 Cr
+          </p>
+          <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">
+            Annual revenue trajectory (2025 to 2026)
+          </p>
+        </div>
+
+        <!-- Metric 2 -->
+        <div class="ops-card rounded-xl p-5 flex flex-col justify-between">
+          <p class="font-mono text-[10px] uppercase tracking-[0.14em] mb-3" style="color: var(--text-muted);">
+            MEASURED LIFT
+          </p>
+          <p class="text-2xl sm:text-[28px] font-bold tracking-tight leading-snug" style="color: var(--text-primary);">
+            +36%
+          </p>
+          <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">
+            Approximate YoY revenue lift
+          </p>
+        </div>
+
+        <!-- Metric 3 -->
+        <div class="ops-card rounded-xl p-5 flex flex-col justify-between">
+          <p class="font-mono text-[10px] uppercase tracking-[0.14em] mb-3" style="color: var(--text-muted);">
+            ACTIVE TENURE
+          </p>
+          <p class="text-2xl sm:text-[28px] font-bold tracking-tight leading-snug" style="color: var(--text-primary);">
+            2 Stints
+          </p>
+          <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">
+            Jun–Aug 2025 &amp; Jun–Oct 2026 (8 Months Active)
+          </p>
+        </div>
+
+        <!-- Metric 4 -->
+        <div class="ops-card rounded-xl p-5 flex flex-col justify-between">
+          <p class="font-mono text-[10px] uppercase tracking-[0.14em] mb-3" style="color: var(--text-muted);">
+            ACCOUNTABILITY
+          </p>
+          <p class="text-2xl sm:text-[28px] font-bold tracking-tight leading-snug" style="color: var(--text-primary);">
+            0% Equity
+          </p>
+          <p class="text-xs mt-2 leading-relaxed" style="color: var(--text-secondary);">
+            100% ownership mindset (Direct owner advisory)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section Hairline Divider -->
+    <hr style="border-color: var(--border-subtle);" />
+
+    <!-- ======================================================================
+         3. EVIDENCE BEHIND THE NUMBERS (6 Structured Operations Cards)
+         ====================================================================== -->
+    <section id="results" class="py-14 sm:py-20 reveal">
+      <!-- Split Editorial Section Header -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end mb-10 sm:mb-12">
+        <div class="lg:col-span-6">
+          <p class="font-mono text-[11px] uppercase tracking-[0.15em] mb-3" style="color: var(--text-muted);">
+            OUTCOMES ABOVE PROCESS
+          </p>
+          <h2 class="text-3xl sm:text-[42px] font-bold tracking-[-0.03em] leading-[1.08]" style="color: var(--text-primary);">
+            The evidence behind the
+            <span class="editorial-italic font-medium">numbers</span><span class="text-[#e0531f]">.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="text-sm sm:text-[15.5px] leading-relaxed" style="color: var(--text-secondary);">
+            Operations is a numbers job, so this breakdown leads with before-and-after evidence—what changed on the ground, how I collaborated with the owner, and why those habits scale.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2-Column Grid of 6 Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+
+        <!-- Card 1 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Revenue &amp; Growth Delta
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">01</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            Lead with the swing: stepped into a retail clothing business generating <strong style="color: var(--text-primary);" class="font-medium">~₹1.25 Cr in 2025</strong> and helped guide it to <strong style="color: var(--text-primary);" class="font-medium">~₹1.70 Cr in 2026</strong> through practical operational changes, sharper merchandising focus, and disciplined sales execution.
+          </p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Direct Owner Advisory
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">02</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            No ownership stake, no inflated title. Worked directly alongside the store owner—identifying operational gaps, pitching actionable growth ideas, and helping execute them on the ground so decisions turned into results instead of staying on paper.
+          </p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Repeatable Workflows
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">03</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            Turned day-to-day guesswork into structured routines for customer handling, seasonal stock prioritization, and promotional outreach—ensuring improvements held steady and compounded even between my active stints.
+          </p>
+        </article>
+
+        <!-- Card 4 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Scope &amp; Collaboration
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">04</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            Operated inside a fast-moving retail floor environment, aligning floor staff and owner priorities around footfall conversion, customer experience, and peak-season readiness during high-volume festive windows.
+          </p>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Systems &amp; Tech Leverage
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">05</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            Paired ground-level retail understanding with a B.Tech IT background (<strong style="color: var(--text-primary);" class="font-medium">Full-Stack, AI, and digital workflows</strong>) to modernize promotional media, streamline tracking, and bring analytical rigor to traditional retail.
+          </p>
+        </article>
+
+        <!-- Card 6 -->
+        <article class="ops-card ops-card-interactive rounded-xl p-6 sm:p-7">
+          <div class="flex items-center justify-between gap-2 mb-3">
+            <h3 class="text-base sm:text-[17px] font-semibold tracking-tight" style="color: var(--text-primary);">
+              Founder-Ready Mindset
+            </h3>
+            <span class="font-mono text-[11px] text-[#e0531f]">06</span>
+          </div>
+          <p class="text-sm leading-[1.68]" style="color: var(--text-secondary);">
+            Proved the ability to diagnose a business, take accountability for outcomes without holding equity, and drive measurable revenue—the exact operational foundation needed to help scale a team or build a company of my own.
+          </p>
+        </article>
+      </div>
+
+      <!-- Subtle Callout Strip: Confidentiality & Honesty -->
+      <div
+        class="mt-5 rounded-xl p-5 sm:p-6"
+        style="background-color: var(--bg-callout-warn); border: 1px solid var(--border-warn);"
+      >
+        <p class="text-sm font-semibold mb-1.5 text-[#e0531f]">
+          A note on confidentiality &amp; honesty
+        </p>
+        <p class="text-xs sm:text-[13.5px] leading-relaxed" style="color: var(--text-secondary);">
+          All financial figures above (~₹1.25 Cr to ~₹1.70 Cr) are approximate, public-safe ranges shared with full respect for the store's privacy. No confidential vendor rates, supplier terms, or internal profit margins are disclosed. I hold zero ownership in the business and present my contribution transparently as hands-on advisory and operational execution.
+        </p>
+      </div>
+    </section>
+
+    <!-- Section Hairline Divider -->
+    <hr style="border-color: var(--border-subtle);" />
+
+    <!-- ======================================================================
+         4. CAPABILITIES & FOCUS AREAS (Monospace Pill Bar)
+         ====================================================================== -->
+    <section id="capabilities" class="py-14 sm:py-20 reveal">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-end mb-8 sm:mb-10">
+        <div class="lg:col-span-6">
+          <p class="font-mono text-[11px] uppercase tracking-[0.15em] mb-3" style="color: var(--text-muted);">
+            CORE COMPETENCIES
+          </p>
+          <h2 class="text-3xl sm:text-[42px] font-bold tracking-[-0.03em] leading-[1.08]" style="color: var(--text-primary);">
+            Capabilities &amp;
+            <span class="editorial-italic font-medium">focus areas</span><span class="text-[#e0531f]">.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-6">
+          <p class="text-sm sm:text-[15.5px] leading-relaxed" style="color: var(--text-secondary);">
+            Practical skills sharpened at the intersection of ground-level retail execution and modern software engineering.
+          </p>
+        </div>
+      </div>
+
+      <!-- Monospace Pill Tags -->
+      <div class="flex flex-wrap gap-2.5">
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Retail Operations</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Revenue Growth</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Business Strategy</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Owner Advisory</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Process Improvement</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Inventory Planning</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Customer Experience</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">KPI Tracking</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Full-Stack Development</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">AI &amp; Automation</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Digital Marketing</span>
+        <span class="ops-pill font-mono text-xs px-3.5 py-2 rounded-full">Problem Solving</span>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. FOOTER / CONTACT CTA BOX
+         ====================================================================== -->
+    <section id="contact" class="pt-4 pb-16 sm:pb-24 reveal">
+      <div class="ops-card rounded-2xl p-7 sm:p-11 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8">
+        <div class="max-w-xl">
+          <p class="font-mono text-[11px] uppercase tracking-[0.15em] mb-3 text-[#e0531f]">
+            GET IN TOUCH
+          </p>
+          <h2 class="text-3xl sm:text-[42px] font-bold tracking-[-0.03em] leading-[1.08]" style="color: var(--text-primary);">
+            Ready to build something
+            <span class="editorial-italic font-medium">real</span><span class="text-[#e0531f]">.</span>
+          </h2>
+          <p class="mt-3.5 text-sm sm:text-[15px] leading-relaxed" style="color: var(--text-secondary);">
+            Open to conversations around founder's office, operations, growth, and software/AI roles—or simply trading notes on how businesses scale.
+          </p>
+        </div>
+
+        <!-- Contact Actions (Update placeholder links below with your live URLs) -->
+        <div class="flex flex-col sm:flex-row lg:flex-col gap-3 shrink-0 min-w-57.5">
+          <div class="flex items-center gap-2">
+            <a
+              href="mailto:ankitagr2006@gmail.co
+              m"
+              class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg text-sm font-semibold text-white bg-[#e0531f] hover:bg-[#c94616] transition-colors"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="M3 7l9 6 9-6" />
+              </svg>
+              <span>Email Ankit</span>
+            </a>
+
+            <!-- Quick Copy Email Button -->
+            <button
+              id="copy-email-btn"
+              type="button"
+              data-email="ankitagr2006@gmail.com"
+              title="Copy email address"
+              aria-label="Copy email address"
+              class="px-3.5 py-3 rounded-lg ops-btn-secondary cursor-pointer"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <a
+              href="https://linkedin.com/in/ankit-agarwal"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium ops-btn-secondary"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+                <rect x="2" y="9" width="4" height="12" />
+                <circle cx="4" cy="4" r="2" />
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+
+            <a
+              href="https://github.com/ankit-agarwal"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-xs font-medium ops-btn-secondary"
+            >
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+              </svg>
+              <span>GitHub</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Minimal Bottom Footer -->
+      <footer class="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style="border-top: 1px solid var(--border-subtle); color: var(--text-muted);">
+        <p>&copy; 2026 Ankit Agarwal. Built with clarity and honest numbers.</p>
+        <p class="font-mono text-[11px]">RETAIL OPERATIONS &middot; TECH + BUSINESS</p>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Subtle Copy Confirmation Toast (No alert()) -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-6 right-6 z-50 px-4 py-2.5 rounded-lg text-xs font-medium shadow-lg pointer-events-none opacity-0 translate-y-2"
+    style="background-color: var(--bg-surface); border: 1px solid var(--border-strong); color: var(--text-primary);"
+  >
+    Email copied to clipboard
+  </div>
+
+  <!-- ========================================================================
+       JAVASCRIPT: Theme Toggle, Mobile Menu, Copy Email, Reveal
+       ======================================================================== -->
+  <script>
+    (function () {
+      // 1. Light / Dark Mode Toggle with Persistence
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const rootEl = document.documentElement;
+
+      if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function () {
+          const isDark = rootEl.classList.toggle('dark');
+          try {
+            localStorage.setItem('ankit-ops-theme', isDark ? 'dark' : 'light');
+          } catch (e) {
+            // Ignore storage errors in sandboxed iframes
+          }
+        });
+      }
+
+      // 2. Mobile Navigation Menu Toggle
+      const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('menu-icon-open');
+      const iconClose = document.getElementById('menu-icon-close');
+      const mobileLinks = document.querySelectorAll('.mobile-nav-link');
+
+      function setMobileMenu(open) {
+        if (!mobileMenu || !mobileMenuBtn) return;
+        mobileMenu.classList.toggle('hidden', !open);
+        mobileMenuBtn.setAttribute('aria-expanded', String(open));
+        if (iconOpen && iconClose) {
+          iconOpen.classList.toggle('hidden', open);
+          iconClose.classList.toggle('hidden', !open);
+        }
+      }
+
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function () {
+          const isOpen = mobileMenu && !mobileMenu.classList.contains('hidden');
+          setMobileMenu(!isOpen);
+        });
+      }
+
+      mobileLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          setMobileMenu(false);
+        });
+      });
+
+      // 3. Copy Email with Toast Notification (Iframe-safe via execCommand fallback)
+      const copyBtn = document.getElementById('copy-email-btn');
+      const toast = document.getElementById('toast');
+      let toastTimer = null;
+
+      function showToast(message) {
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(function () {
+          toast.classList.remove('opacity-100', 'translate-y-0');
+          toast.classList.add('opacity-0', 'translate-y-2');
+        }, 2200);
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+          const email = copyBtn.getAttribute('data-email') || 'ankitagr2006@gmail.com';
+          try {
+            const tempInput = document.createElement('textarea');
+            tempInput.value = email;
+            tempInput.setAttribute('readonly', '');
+            tempInput.style.position = 'absolute';
+            tempInput.style.left = '-9999px';
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            showToast('Email copied: ' + email);
+          } catch (e) {
+            showToast('Email: ' + email);
+          }
+        });
+      }
+
+      // 4. Smooth Scroll Entrance Animations
+      const revealEls = document.querySelectorAll('.reveal');
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          function (entries, obs) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                obs.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -20px 0px' }
+        );
+
+        revealEls.forEach(function (el) {
+          observer.observe(el);
+        });
+      } else {
+        revealEls.forEach(function (el) {
+          el.classList.add('visible');
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
