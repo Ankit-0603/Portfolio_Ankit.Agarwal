@@ -3,7 +3,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { contact } from "../data/portfolio";
 import HoverLinks from "./HoverLinks";
 import { gsap } from "gsap";
-import { ScrollSmoother } from "gsap-trial/ScrollSmoother";
+import { ScrollSmoother } from "gsap/ScrollSmoother";
 import { useLoading } from "../context/LoadingProvider";
 import PortfolioLogo from "./PortfolioLogo";
 import "./styles/Navbar.css";
