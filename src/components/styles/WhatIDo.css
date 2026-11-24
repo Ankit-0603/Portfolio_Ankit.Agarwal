@@ -51,8 +51,6 @@
 }
 .what-content {
   width: 100%;
-  height: 33%;
-  min-height: 50%;
   transition: 0.5s;
   /* border: 0.5px dashed rgba(255, 255, 255, 0.3); */
   position: relative;
@@ -62,14 +60,12 @@
 
 .what-noTouch:hover,
 .what-content-active {
-  min-height: 67%;
   padding: 40px 50px;
 }
 
 .what-noTouch:hover ~ .what-content,
 .what-box-in:hover .what-noTouch:not(:hover),
 .what-content.what-sibling {
-  min-height: 33%;
   padding: 10px 50px;
 }
 .what-content h3 {
@@ -265,6 +261,14 @@
   border: 1px solid #ffffff50;
   border-radius: 30px;
 }
+@media only screen and (min-width: 1101px) {
+  .what-content:not(.what-business) { height: 33%; }
+  .what-content { min-height: 50%; }
+  .what-noTouch:hover,
+  .what-content-active { min-height: 67%; }
+  .what-box-in:hover .what-noTouch:not(:hover),
+  .what-content.what-sibling { min-height: 33%; }
+}
 @media only screen and (max-width: 1400px) {
   .what-box-in {
     height: 400px;
@@ -306,6 +310,19 @@
     align-self: end;
   }
   .what-box:last-child { grid-area: cards; }
+  .what-box-in,
+  .what-content-in { height: auto; }
+  .what-arrow {
+    position: relative;
+    inset: auto;
+    margin: 0.75rem 0 0 auto;
+  }
+  .what-content h5,
+  .what-content-flex { display: none; }
+  .what-noTouch:hover h5,
+  .what-content-active h5 { display: block; }
+  .what-noTouch:hover .what-content-flex,
+  .what-content-active .what-content-flex { display: flex; }
   .what-workstation {
     grid-area: scene;
     max-width: 26rem;
@@ -325,18 +342,6 @@
   .what-box h2 > div { display: inline; }
   .what-box h2 > div::before { content: " "; }
   .what-workstation { max-width: 22rem; }
-  .what-box-in { height: 450px; }
-  .what-content h5,
-  .what-content-flex {
-    opacity: 0;
-    transition: 0.3s;
-  }
-  .what-noTouch:hover h5,
-  .what-content-active h5,
-  .what-noTouch:hover .what-content-flex,
-  .what-content-active .what-content-flex {
-    opacity: 1;
-  }
   .what-content {
     padding: 30px;
   }
