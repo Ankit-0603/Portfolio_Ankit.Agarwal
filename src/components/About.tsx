@@ -6,8 +6,7 @@ const About = () => {
       <div className="about-me">
         <h3 className="title">About Me</h3>
         <p className="para">
-          I'm Ankit, a software engineer passionate about building intelligent
-          applications and solving challenging problems through code.
+          I'm Ankit, a software engineer passionate about building intelligent applications and solving challenging problems through code.
         </p>
         <p className="para">
           My work spans AI-powered developer tools, full-stack applications, intelligent
